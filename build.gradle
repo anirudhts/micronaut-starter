@@ -4,6 +4,7 @@ plugins {
     id 'jacoco'
     id 'pmd'
     id 'checkstyle'
+    id "com.github.spotbugs" version "4.5.1"
 }
 
 version = "0.1"
@@ -44,6 +45,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 }
 
 test {
@@ -81,5 +83,24 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html {
+            enabled = true
+            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+//project.gradle.startParameter.excludedTaskNames.add("spotbugsMain")
+//build.dependsOn.remove("spotbugsMain")
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(build)) {
+        spotbugsMain.enabled = true
+        pmdTest.enabled = false
+        spotbugsTest.enabled = false
+    }
+}
 
 
