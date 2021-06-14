@@ -3,6 +3,7 @@ plugins {
     id("io.micronaut.application") version "1.5.0"
     id 'jacoco'
     id 'pmd'
+    id 'checkstyle'
 }
 
 version = "0.1"
@@ -10,6 +11,11 @@ group = "com.project"
 
 repositories {
     mavenCentral()
+}
+
+checkstyle {
+    toolVersion = '8.31'
+    configDirectory = file("config/checkstyle")
 }
 
 micronaut {
