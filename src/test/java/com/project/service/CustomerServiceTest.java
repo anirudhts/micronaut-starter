@@ -19,9 +19,9 @@ class CustomerServiceTest {
 
 
     @Mock
-    CustomerRepository customerRepository;
+    CustomerRepository customerRepository; //NOPMD
 
-    private CustomerService customerService;
+    private CustomerService customerService; //NOPMD
 
 
     @BeforeEach

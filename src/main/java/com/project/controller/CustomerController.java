@@ -12,7 +12,7 @@ import java.util.List;
 @Controller("/customer")
 public class CustomerController {
 
-    private final CustomerService customerService;
+    private final CustomerService customerService; //NOPMD
 
     @Inject
     public CustomerController(CustomerService customerService) {

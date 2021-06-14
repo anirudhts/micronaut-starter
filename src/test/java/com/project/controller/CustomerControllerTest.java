@@ -19,11 +19,11 @@ import static org.mockito.Mockito.when;
 class CustomerControllerTest {
 
     @Inject
-    CustomerService customerService;
+    CustomerService customerService; //NOPMD
 
     @Inject
     @Client("/customer")
-    RxHttpClient rxHttpClient;
+    RxHttpClient rxHttpClient; //NOPMD
 
     @Test
     void getAllCustomersShouldReturnListOfCustomers() {

@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CustomerIntegrationTest {
 
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper(); //NOPMD
 
     @Inject
     EmbeddedApplication application;
 
     @Inject
     @Client("/customer")
-    RxHttpClient rxHttpClient;
+    RxHttpClient rxHttpClient; //NOPMD
 
 
     @Test

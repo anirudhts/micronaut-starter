@@ -9,7 +9,7 @@ import java.util.List;
 @Singleton
 public class CustomerRepository {
 
-    private List<Customer> customers;
+    private List<Customer> customers; //NOPMD
 
     public CustomerRepository() {
         customers = new ArrayList<>();
