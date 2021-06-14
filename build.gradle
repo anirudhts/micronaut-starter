@@ -64,7 +64,7 @@ jacocoTestReport {
 pmd {
     ignoreFailures = false
     toolVersion = "6.21.0"
-    ruleSets = ["rulesets/pmd-ruleset.xml"]
+    ruleSets = ["config/pmd/pmd-ruleset.xml"]
 }
 
 application {

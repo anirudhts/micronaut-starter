@@ -39,7 +39,7 @@ public class CustomerIntegrationTest {
         Map<String, String> props2 = objectMapper.convertValue(new Customer("def", "765432"), Map.class);
         List<Map<String, String>> expectedCustomers = List.of(props1, props2);
 
-        assertEquals(expectedCustomers, actualCustomers);
+        assertEquals(expectedCustomers, actualCustomers, "All customers should be present");
     }
 
 }

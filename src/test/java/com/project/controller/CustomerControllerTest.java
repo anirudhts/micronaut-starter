@@ -31,11 +31,11 @@ class CustomerControllerTest {
         when(customerService.getCustomers()).thenReturn(expectedList);
 
         List actualList = rxHttpClient.toBlocking().retrieve("/", List.class);
-        assertEquals(expectedList, actualList);
+        assertEquals(expectedList, actualList, "The expected response should be same as actual response");
     }
 
     @MockBean(CustomerService.class)
-    CustomerService customerService() {
+    CustomerService customerServiceMock() {
         return mock(CustomerService.class);
     }
 

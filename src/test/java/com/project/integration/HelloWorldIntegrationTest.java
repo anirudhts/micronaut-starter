@@ -24,7 +24,7 @@ public class HelloWorldIntegrationTest {
     @Test
     void testHelloWorldBlockingWithHttpClient() {
         String helloString = rxHttpClient.toBlocking().retrieve("/hello");
-        assertEquals("Hello world", helloString);
+        assertEquals("Hello world", helloString, "Should return Hello World");
     }
 
 }

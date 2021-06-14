@@ -36,6 +36,6 @@ class CustomerServiceTest {
 
         List<Customer> actualList = customerService.getCustomers();
 
-        assertEquals(expectedList, actualList);
+        assertEquals(expectedList, actualList, "It retrieves all customers");
     }
 }
