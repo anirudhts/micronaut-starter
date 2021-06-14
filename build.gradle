@@ -5,6 +5,7 @@ plugins {
     id 'pmd'
     id 'checkstyle'
     id "com.github.spotbugs" version "4.5.1"
+    id "org.owasp.dependencycheck" version "6.1.6"
 }
 
 version = "0.1"
@@ -83,6 +84,15 @@ java {
     targetCompatibility = JavaVersion.toVersion("11")
 }
 
+
+check.dependsOn dependencyCheckAnalyze
+dependencyCheck {
+
+    failBuildOnCVSS = 7
+    // Add a suppression file once there are known issues
+    //suppressionFile = 'config/dependency-check/dependency-check-known-issues.xml'
+}
+
 spotbugsMain {
     reports {
         xml.enabled = false
@@ -93,8 +103,7 @@ spotbugsMain {
         }
     }
 }
-//project.gradle.startParameter.excludedTaskNames.add("spotbugsMain")
-//build.dependsOn.remove("spotbugsMain")
+
 gradle.taskGraph.whenReady { graph ->
     if (graph.hasTask(build)) {
         spotbugsMain.enabled = true
