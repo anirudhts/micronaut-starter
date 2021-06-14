@@ -18,7 +18,7 @@ public class HelloWorldIntegrationTest {
 
     @Inject
     @Client("/home")
-    RxHttpClient rxHttpClient; //NOPMD
+    RxHttpClient rxHttpClient;
 
 
     @Test

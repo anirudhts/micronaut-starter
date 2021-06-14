@@ -10,7 +10,7 @@ import java.util.List;
 @Singleton
 public class CustomerService {
 
-    private final CustomerRepository customerRepository; //NOPMD
+    private final CustomerRepository customerRepository;
 
     @Inject
     public CustomerService(CustomerRepository customerRepository) {

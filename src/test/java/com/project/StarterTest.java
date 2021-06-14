@@ -11,7 +11,7 @@ import javax.inject.Inject;
 class StarterTest {
 
     @Inject
-    EmbeddedApplication<?> application; //NOPMD
+    EmbeddedApplication<?> application;
 
     @Test
     void testItWorks() {

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class HelloWorldController {
 
 
-    private final HelloWorldService helloWorldService; //NOPMD
+    private final HelloWorldService helloWorldService;
 
     @Inject
     public HelloWorldController(HelloWorldService helloWorldService) {
