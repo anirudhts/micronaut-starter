@@ -5,8 +5,7 @@ import javax.inject.Singleton;
 @Singleton
 public class HelloWorldService {
 
-    public String hello() {
-        return "Hello world";
-    }
-
+  public String hello() {
+    return "Hello world";
+  }
 }

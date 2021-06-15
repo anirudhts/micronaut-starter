@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Customer {
 
-    private String name;
-    private String phoneNo;
+  private String name;
+  private String phoneNo;
 }
