@@ -5,10 +5,16 @@ import com.project.models.Customer;
 import com.project.service.CustomerService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import java.util.List;
 
+@Tag(name = "Customer controller")
 @Controller("/customer")
 public class CustomerController {
 
@@ -21,6 +27,17 @@ public class CustomerController {
 
 
     @Get("/")
+    @Operation(summary = "Get customers",
+            description = "Fetches information of all customers of the system"
+    )
+    @ApiResponse(
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(type = "string"))
+    )
+    @ApiResponse(responseCode = "200", description = "Success")
+    @ApiResponse(responseCode = "400", description = "Invalid Request")
+    @ApiResponse(responseCode = "404", description = "Not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public List<Customer> getAllCustomers() {
         return customerService.getCustomers();
     }

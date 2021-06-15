@@ -4,9 +4,11 @@ package com.project.controller;
 import com.project.service.HelloWorldService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.inject.Inject;
 
+@Tag(name = "Hello world")
 @Controller("/home")
 public class HelloWorldController {
 
