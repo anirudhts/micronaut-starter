@@ -1,22 +1,16 @@
 package com.project.repository;
 
-import com.project.models.Customer;
-import java.util.ArrayList;
+import com.project.models.db.Customers;
+import io.micronaut.context.annotation.Executable;
+import io.micronaut.data.jdbc.annotation.JdbcRepository;
+import io.micronaut.data.model.query.builder.sql.Dialect;
+import io.micronaut.data.repository.CrudRepository;
 import java.util.List;
-import javax.inject.Singleton;
 
-@Singleton
-public class CustomerRepository {
+@JdbcRepository(dialect = Dialect.ORACLE)
+public interface CustomerRepository extends CrudRepository<Customers, Long> {
 
-  private final List<Customer> customers;
-
-  public CustomerRepository() {
-    customers = new ArrayList<>();
-    customers.add(new Customer("abc", "1234567"));
-    customers.add(new Customer("def", "765432"));
-  }
-
-  public List<Customer> getAllCustomers() {
-    return customers;
-  }
+  @Executable
+  @Override
+  List<Customers> findAll();
 }

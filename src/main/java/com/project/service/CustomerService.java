@@ -1,8 +1,10 @@
 package com.project.service;
 
 import com.project.models.Customer;
+import com.project.models.db.Customers;
 import com.project.repository.CustomerRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -17,6 +19,8 @@ public class CustomerService {
   }
 
   public List<Customer> getCustomers() {
-    return customerRepository.getAllCustomers();
+    List<Customers> customerEntities = customerRepository.findAll();
+
+    return customerEntities.stream().map(Customer::new).collect(Collectors.toList());
   }
 }

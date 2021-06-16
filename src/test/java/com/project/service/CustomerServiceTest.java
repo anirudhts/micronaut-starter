@@ -1,10 +1,10 @@
 package com.project.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.project.models.Customer;
+import com.project.models.db.Customers;
 import com.project.repository.CustomerRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,11 +27,13 @@ class CustomerServiceTest {
 
   @Test
   void getCustomersShouldReturnAllCustomersFromRepository() {
-    List expectedList = mock(List.class);
-    when(customerRepository.getAllCustomers()).thenReturn(expectedList);
+    List<Customers> customersFromDb = List.of(new Customers(1234L, "ani", "24352"));
+    List<Customer> expectedCustomers = List.of(new Customer("ani", "24352"));
 
-    List<Customer> actualList = customerService.getCustomers();
+    when(customerRepository.findAll()).thenReturn(customersFromDb);
 
-    assertEquals(expectedList, actualList, "It retrieves all customers");
+    List<Customer> actualCustomers = customerService.getCustomers();
+
+    assertEquals(expectedCustomers, actualCustomers, "It retrieves all customers");
   }
 }
