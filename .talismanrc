@@ -1,0 +1,4 @@
+fileignoreconfig:
+- filename: src/main/resources/application.yml
+  checksum: eb9ae9939b320ec075313f222036db6ea3b0c1c5da50f22e4fa3921a0383b5d9
+  ignore_detectors: []
