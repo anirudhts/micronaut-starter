@@ -111,6 +111,7 @@ spotless {
 }
 
 spotbugsMain {
+    onlyAnalyze = [ 'com.project.*' ]
     reports {
         xml.enabled = false
         html {

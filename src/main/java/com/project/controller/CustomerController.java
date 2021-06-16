@@ -4,6 +4,7 @@ import com.project.models.Customer;
 import com.project.service.CustomerService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,5 +36,10 @@ public class CustomerController {
   @ApiResponse(responseCode = "500", description = "Internal server error")
   public List<Customer> getAllCustomers() {
     return customerService.getCustomers();
+  }
+
+  @Get("/{customerId}")
+  public Customer getCustomer(@PathVariable Long customerId) {
+    return customerService.getCustomer(customerId);
   }
 }
