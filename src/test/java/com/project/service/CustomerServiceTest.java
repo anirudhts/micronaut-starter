@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.project.models.Customer;
 import com.project.models.db.Customers;
+import com.project.repository.AccountRepository;
 import com.project.repository.CustomerRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,12 +18,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CustomerServiceTest {
 
   @Mock CustomerRepository customerRepository;
+  @Mock AccountRepository accountRepository;
 
   private CustomerService customerService;
 
   @BeforeEach
   void setUp() {
-    customerService = new CustomerService(customerRepository);
+    customerService = new CustomerService(customerRepository, accountRepository);
   }
 
   @Test

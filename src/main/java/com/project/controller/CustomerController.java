@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.models.Customer;
+import com.project.models.dto.out.AccountResponse;
 import com.project.service.CustomerService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -41,5 +42,10 @@ public class CustomerController {
   @Get("/{customerId}")
   public Customer getCustomer(@PathVariable Long customerId) {
     return customerService.getCustomer(customerId);
+  }
+
+  @Get("/{customerId}/accounts")
+  public AccountResponse getAllCustomerAccounts(@PathVariable Long customerId) {
+    return customerService.getAllAccountsByCustomerId(customerId);
   }
 }
