@@ -8,3 +8,7 @@ datasources:
     username: ${JDBC_USER:SYSTEM}
     password: ${JDBC_PASSWORD:testing12345}
     driverClassName: ${JDBC_DRIVER:oracle.jdbc.driver.OracleDriver}
+
+aerospike:
+  hostname: 127.0.0.1
+  port: 3000

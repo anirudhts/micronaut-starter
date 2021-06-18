@@ -6,6 +6,7 @@ import com.project.models.db.Accounts;
 import com.project.models.db.Customers;
 import com.project.models.dto.out.AccountResponse;
 import com.project.repository.AccountRepository;
+import com.project.repository.CustomerCachedRepository;
 import com.project.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +19,16 @@ public class CustomerService {
 
   private final CustomerRepository customerRepository;
   private final AccountRepository accountRepository;
+  private final CustomerCachedRepository customerCachedRepository;
 
   @Inject
   public CustomerService(
-      CustomerRepository customerRepository, AccountRepository accountRepository) {
+      CustomerRepository customerRepository,
+      AccountRepository accountRepository,
+      CustomerCachedRepository customerCachedRepository) {
     this.customerRepository = customerRepository;
     this.accountRepository = accountRepository;
+    this.customerCachedRepository = customerCachedRepository;
   }
 
   public List<Customer> getCustomers() {
