@@ -1,5 +1,6 @@
 package com.project.models.db;
 
+import com.project.models.Customer;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Customers {
+public class CustomerEntity {
   @Id
   @MappedProperty("customer_id")
   @NotNull
@@ -25,6 +26,12 @@ public class Customers {
 
   @MappedProperty("phone_number")
   private String phoneNo;
+
+  public CustomerEntity(Customer customer) {
+    this.name = customer.getName();
+    this.phoneNo = customer.getPhoneNo();
+    this.customerId = (long) (Math.random() * 10000);
+  }
 
   //  @OneToMany(targetEntity = Accounts.class)
   //  @JoinColumn(name = "accounts", referencedColumnName = "customer_id")

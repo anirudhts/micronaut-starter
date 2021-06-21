@@ -1,6 +1,6 @@
 package com.project.models;
 
-import com.project.models.db.Accounts;
+import com.project.models.db.AccountEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +13,9 @@ public class Account {
   private String accountType;
   private String branch;
 
-  public Account(Accounts accounts) {
-    this.accountId = accounts.getAccountId();
-    this.accountType = accounts.getAccountType();
-    this.branch = accounts.getBranch();
+  public Account(AccountEntity accountEntity) {
+    this.accountId = accountEntity.getAccountId();
+    this.accountType = accountEntity.getAccountType();
+    this.branch = accountEntity.getBranch();
   }
 }

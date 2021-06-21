@@ -3,9 +3,7 @@ package com.project.controller;
 import com.project.models.Customer;
 import com.project.models.dto.out.AccountResponse;
 import com.project.service.CustomerService;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -47,5 +45,10 @@ public class CustomerController {
   @Get("/{customerId}/accounts")
   public AccountResponse getAllCustomerAccounts(@PathVariable Long customerId) {
     return customerService.getAllAccountsByCustomerId(customerId);
+  }
+
+  @Post("/")
+  public Long addNewCustomer(@Body Customer customer) {
+    return customerService.insertCustomerToCache(customer);
   }
 }

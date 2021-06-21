@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Accounts {
+public class AccountEntity {
   @Id
   @MappedProperty("account_id")
   @NotNull
@@ -27,9 +27,9 @@ public class Accounts {
   @MappedProperty("branch")
   private String branch;
 
-  @ManyToOne(targetEntity = Customers.class)
+  @ManyToOne(targetEntity = CustomerEntity.class)
   @MappedProperty("customer_id")
   @Nullable
   @JoinColumn(name = "customers", referencedColumnName = "customer_id")
-  private Customers customers;
+  private CustomerEntity customerEntity;
 }

@@ -1,6 +1,6 @@
 package com.project.models;
 
-import com.project.models.db.Customers;
+import com.project.models.db.CustomerEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +14,8 @@ public class Customer {
   private String name;
   private String phoneNo;
 
-  public Customer(Customers customers) {
-    this.name = customers.getName();
-    this.phoneNo = customers.getPhoneNo();
+  public Customer(CustomerEntity customerEntity) {
+    this.name = customerEntity.getName();
+    this.phoneNo = customerEntity.getPhoneNo();
   }
 }

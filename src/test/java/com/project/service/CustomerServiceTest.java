@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.project.models.Customer;
-import com.project.models.db.Customers;
+import com.project.models.db.CustomerEntity;
 import com.project.repository.AccountRepository;
 import com.project.repository.CustomerRepository;
 import java.util.List;
@@ -29,10 +29,10 @@ class CustomerServiceTest {
 
   @Test
   void getCustomersShouldReturnAllCustomersFromRepository() {
-    List<Customers> customersFromDb = List.of(new Customers(1234L, "ani", "24352"));
+    List<CustomerEntity> customerEntityFromDb = List.of(new CustomerEntity(1234L, "ani", "24352"));
     List<Customer> expectedCustomers = List.of(new Customer("ani", "24352"));
 
-    when(customerRepository.findAll()).thenReturn(customersFromDb);
+    when(customerRepository.findAll()).thenReturn(customerEntityFromDb);
 
     List<Customer> actualCustomers = customerService.getCustomers();
 

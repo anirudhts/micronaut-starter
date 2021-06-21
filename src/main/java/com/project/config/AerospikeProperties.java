@@ -9,4 +9,5 @@ public class AerospikeProperties {
 
   private String hostname;
   private Integer port;
+  private String namespace;
 }

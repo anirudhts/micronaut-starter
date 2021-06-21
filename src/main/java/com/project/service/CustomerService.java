@@ -2,8 +2,8 @@ package com.project.service;
 
 import com.project.models.Account;
 import com.project.models.Customer;
-import com.project.models.db.Accounts;
-import com.project.models.db.Customers;
+import com.project.models.db.AccountEntity;
+import com.project.models.db.CustomerEntity;
 import com.project.models.dto.out.AccountResponse;
 import com.project.repository.AccountRepository;
 import com.project.repository.CustomerCachedRepository;
@@ -26,31 +26,33 @@ public class CustomerService {
       CustomerRepository customerRepository,
       AccountRepository accountRepository,
       CustomerCachedRepository customerCachedRepository) {
-    System.out.println("service called");
     this.customerRepository = customerRepository;
     this.accountRepository = accountRepository;
     this.customerCachedRepository = customerCachedRepository;
   }
 
   public List<Customer> getCustomers() {
-    List<Customers> customerEntities = customerRepository.findAll();
+    List<CustomerEntity> customerEntities = customerRepository.findAll();
 
     return customerEntities.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public Customer getCustomer(Long customerId) {
-    Optional<Customers> mayBeCustomer = customerRepository.findById(customerId);
+    Optional<CustomerEntity> mayBeCustomer = customerRepository.findById(customerId);
     return mayBeCustomer.map(Customer::new).orElseThrow(() -> new IllegalArgumentException());
   }
 
   public AccountResponse getAllAccountsByCustomerId(Long customerId) {
-    List<Accounts> accountEntities =
-        accountRepository.findByCustomers(Customers.builder().customerId(customerId).build());
+    List<AccountEntity> accountEntities =
+        accountRepository.findByCustomerEntity(
+            CustomerEntity.builder().customerId(customerId).build());
     return new AccountResponse(
         accountEntities.stream().map(Account::new).collect(Collectors.toList()));
   }
 
-  public void insertCustomerToCache() {
-    customerCachedRepository.insertRecord();
+  public Long insertCustomerToCache(Customer customer) {
+    CustomerEntity customerEntity = new CustomerEntity(customer);
+    customerCachedRepository.insertRecord(customerEntity);
+    return customerEntity.getCustomerId();
   }
 }
