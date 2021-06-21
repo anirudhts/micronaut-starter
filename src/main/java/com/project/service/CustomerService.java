@@ -26,6 +26,7 @@ public class CustomerService {
       CustomerRepository customerRepository,
       AccountRepository accountRepository,
       CustomerCachedRepository customerCachedRepository) {
+    System.out.println("service called");
     this.customerRepository = customerRepository;
     this.accountRepository = accountRepository;
     this.customerCachedRepository = customerCachedRepository;
@@ -47,5 +48,9 @@ public class CustomerService {
         accountRepository.findByCustomers(Customers.builder().customerId(customerId).build());
     return new AccountResponse(
         accountEntities.stream().map(Account::new).collect(Collectors.toList()));
+  }
+
+  public void insertCustomerToCache() {
+    customerCachedRepository.insertRecord();
   }
 }

@@ -15,7 +15,6 @@ public class CustomerCachedRepository {
 
   @Inject
   public CustomerCachedRepository(AerospikeClient aerospikeClient, WritePolicy writePolicy) {
-    System.out.println("initing cached repo");
     this.aerospikeClient = aerospikeClient;
     this.writePolicy = writePolicy;
   }
@@ -23,7 +22,7 @@ public class CustomerCachedRepository {
   public void insertRecord() {
     Key key = new Key("test", "sampleset", "1");
     Bin name = new Bin("name", "someperson");
-    //        Bin bin = new Bin("phone_number", "123456");
-    aerospikeClient.put(writePolicy, key, name);
+    Bin phoneNo = new Bin("phone_number", "123456");
+    aerospikeClient.put(writePolicy, key, name, phoneNo);
   }
 }

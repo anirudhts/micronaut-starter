@@ -37,12 +37,13 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations:2.1.9")
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    compileOnly("com.aerospike:aerospike-client:5.0.0")
+    implementation("com.aerospike:aerospike-client:5.0.0")
 
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.oracle.database.jdbc:ojdbc8")
     implementation("io.micronaut.data:micronaut-data-jdbc:2.4.4")
     annotationProcessor("io.micronaut.data:micronaut-data-processor:2.4.4")
+
     runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
     compileOnly("jakarta.persistence:jakarta.persistence-api:2.2.2")
 
@@ -57,6 +58,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     annotationProcessor("io.micronaut.openapi:micronaut-openapi:2.5.0")
+    annotationProcessor("io.micronaut:micronaut-inject-java")
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 }
 
