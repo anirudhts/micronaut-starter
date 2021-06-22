@@ -82,4 +82,9 @@ public class CustomerService {
       customerCachedRepository.saveRecord(updatedCustomerEntity);
     }
   }
+
+  public void deleteCustomer(Long customerId) {
+    customerRepository.deleteById(customerId);
+    customerCachedRepository.deleteRecord(customerId);
+  }
 }

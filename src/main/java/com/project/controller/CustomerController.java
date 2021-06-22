@@ -59,4 +59,10 @@ public class CustomerController {
     customerService.updateCustomer(customerId, customer);
     return HttpResponse.ok();
   }
+
+  @Delete("/{customerId}")
+  public HttpResponse deleteCustomer(@PathVariable Long customerId) {
+    customerService.deleteCustomer(customerId);
+    return HttpResponse.ok();
+  }
 }
