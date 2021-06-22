@@ -51,8 +51,8 @@ public class CustomerService {
   }
 
   public Long insertCustomerToCache(Customer customer) {
-    CustomerEntity customerEntity = new CustomerEntity(customer);
-    customerCachedRepository.insertRecord(customerEntity);
+    CustomerEntity customerEntity = new CustomerEntity();
+    customerCachedRepository.saveRecord(customerEntity);
     return customerEntity.getCustomerId();
   }
 }

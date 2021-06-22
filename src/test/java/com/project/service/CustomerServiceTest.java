@@ -30,7 +30,7 @@ class CustomerServiceTest {
   @Test
   void getCustomersShouldReturnAllCustomersFromRepository() {
     List<CustomerEntity> customerEntityFromDb = List.of(new CustomerEntity(1234L, "ani", "24352"));
-    List<Customer> expectedCustomers = List.of(new Customer("ani", "24352"));
+    List<Customer> expectedCustomers = List.of(new Customer(1234L, "ani", "24352"));
 
     when(customerRepository.findAll()).thenReturn(customerEntityFromDb);
 

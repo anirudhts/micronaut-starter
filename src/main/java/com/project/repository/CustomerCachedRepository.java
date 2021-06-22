@@ -3,12 +3,12 @@ package com.project.repository;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
+import com.aerospike.client.Record;
 import com.aerospike.client.policy.WritePolicy;
 import com.project.config.AerospikeProperties;
 import com.project.constants.AerospikeConstants;
-import com.project.models.Customer;
 import com.project.models.db.CustomerEntity;
-import java.util.Map;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -30,7 +30,7 @@ public class CustomerCachedRepository {
     this.aerospikeProperties = aerospikeProperties;
   }
 
-  public void insertRecord(CustomerEntity customer) {
+  public void saveRecord(CustomerEntity customer) {
     Key key =
         new Key(
             aerospikeProperties.getNamespace(),
@@ -41,12 +41,38 @@ public class CustomerCachedRepository {
     aerospikeClient.put(writePolicy, key, name, phoneNo);
   }
 
-  public Customer fetchRecord(Long customerId) {
+  public void deleteRecord(Long customerId) {
+    Key deleteKey =
+        new Key(aerospikeProperties.getNamespace(), AerospikeConstants.CUSTOMER_SET, customerId);
+
+    aerospikeClient.delete(writePolicy, deleteKey);
+  }
+
+  public Optional<CustomerEntity> fetchRecord(Long customerId) {
     Key key =
         new Key(aerospikeProperties.getNamespace(), AerospikeConstants.CUSTOMER_SET, customerId);
-    Map<String, Object> records = aerospikeClient.get(null, key).bins;
-    return new Customer(
-        (String) records.get(AerospikeConstants.CUSTOMER_NAME),
-        (String) records.get(AerospikeConstants.PHONE_NUMBER));
+    Optional<Record> maybeRecord = Optional.ofNullable(aerospikeClient.get(null, key));
+    return maybeRecord.map(record -> CustomerEntity.getCustomerEntity(record, customerId));
+  }
+
+  public void putObjectAsBlob(CustomerEntity customer) {
+    Key key =
+        new Key(
+            aerospikeProperties.getNamespace(),
+            AerospikeConstants.CUSTOMER_SET,
+            customer.getCustomerId());
+
+    Bin cust = new Bin("customer", customer);
+    aerospikeClient.put(writePolicy, key, cust);
+  }
+
+  // This method is to read entire object as a Blob
+  public CustomerEntity getObjectBlob(Long customerId) {
+    Key key =
+        new Key(aerospikeProperties.getNamespace(), AerospikeConstants.CUSTOMER_SET, customerId);
+
+    Record record = aerospikeClient.get(null, key);
+
+    return (CustomerEntity) record.getValue("customer");
   }
 }
