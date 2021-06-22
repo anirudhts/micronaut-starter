@@ -2,10 +2,12 @@ package com.project.models.db;
 
 import com.aerospike.client.Record;
 import com.project.constants.AerospikeConstants;
+import com.project.models.Customer;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
 import java.io.Serializable;
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +31,15 @@ public class CustomerEntity implements Serializable {
   @MappedProperty("customer_name")
   private String name;
 
+  @Nullable
   @MappedProperty("phone_number")
   private String phoneNo;
 
-  public static CustomerEntity getCustomerEntity(Record record, Long customerId) {
+  public static CustomerEntity buildCustomerEntityFromCustomer(Customer customer) {
+    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo());
+  }
+
+  public static CustomerEntity getCustomerEntityFromRecord(Record record, Long customerId) {
     return new CustomerEntity(
         customerId,
         record.getString(AerospikeConstants.CUSTOMER_NAME),

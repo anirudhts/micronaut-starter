@@ -1,5 +1,7 @@
 package com.project.service;
 
+import com.project.exceptions.ResourceConflictException;
+import com.project.exceptions.ResourceNotFoundException;
 import com.project.models.Account;
 import com.project.models.Customer;
 import com.project.models.db.AccountEntity;
@@ -38,8 +40,19 @@ public class CustomerService {
   }
 
   public Customer getCustomer(Long customerId) {
-    Optional<CustomerEntity> mayBeCustomer = customerRepository.findById(customerId);
-    return mayBeCustomer.map(Customer::new).orElseThrow(() -> new IllegalArgumentException());
+    Optional<CustomerEntity> mayBeCustomerEntity = customerCachedRepository.fetchRecord(customerId);
+    return mayBeCustomerEntity
+        .map(Customer::new)
+        .orElseGet(
+            () ->
+                customerRepository
+                    .findById(customerId)
+                    .map(
+                        customerEntity -> {
+                          customerCachedRepository.saveRecord(customerEntity);
+                          return new Customer(customerEntity);
+                        })
+                    .orElseThrow(() -> new ResourceNotFoundException("Customer not present")));
   }
 
   public AccountResponse getAllAccountsByCustomerId(Long customerId) {
@@ -50,9 +63,23 @@ public class CustomerService {
         accountEntities.stream().map(Account::new).collect(Collectors.toList()));
   }
 
-  public Long insertCustomerToCache(Customer customer) {
-    CustomerEntity customerEntity = new CustomerEntity();
+  public void addCustomer(Customer customer) {
+    if (customerRepository.findById(customer.getCustomerId()).isPresent()) {
+      throw new ResourceConflictException("Customer is already present.");
+    }
+    CustomerEntity customerEntity = CustomerEntity.buildCustomerEntityFromCustomer(customer);
+    customerRepository.save(customerEntity);
     customerCachedRepository.saveRecord(customerEntity);
-    return customerEntity.getCustomerId();
+  }
+
+  public void updateCustomer(Long customerId, Customer customer) {
+    Optional<CustomerEntity> mayBeCustomerEntity = customerRepository.findById(customerId);
+    if (mayBeCustomerEntity.isPresent()) {
+      customer.setCustomerId(customerId);
+      CustomerEntity updatedCustomerEntity =
+          CustomerEntity.buildCustomerEntityFromCustomer(customer);
+      customerRepository.update(updatedCustomerEntity);
+      customerCachedRepository.saveRecord(updatedCustomerEntity);
+    }
   }
 }

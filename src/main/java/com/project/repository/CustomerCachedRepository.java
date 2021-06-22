@@ -52,7 +52,8 @@ public class CustomerCachedRepository {
     Key key =
         new Key(aerospikeProperties.getNamespace(), AerospikeConstants.CUSTOMER_SET, customerId);
     Optional<Record> maybeRecord = Optional.ofNullable(aerospikeClient.get(null, key));
-    return maybeRecord.map(record -> CustomerEntity.getCustomerEntity(record, customerId));
+    return maybeRecord.map(
+        record -> CustomerEntity.getCustomerEntityFromRecord(record, customerId));
   }
 
   public void putObjectAsBlob(CustomerEntity customer) {

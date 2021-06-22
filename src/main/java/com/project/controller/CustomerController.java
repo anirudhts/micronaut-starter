@@ -3,6 +3,7 @@ package com.project.controller;
 import com.project.models.Customer;
 import com.project.models.dto.out.AccountResponse;
 import com.project.service.CustomerService;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,7 +49,14 @@ public class CustomerController {
   }
 
   @Post("/")
-  public Long addNewCustomer(@Body Customer customer) {
-    return customerService.insertCustomerToCache(customer);
+  public HttpResponse addNewCustomer(@Body Customer customer) {
+    customerService.addCustomer(customer);
+    return HttpResponse.ok();
+  }
+
+  @Put("/{customerId}")
+  public HttpResponse updateCustomer(@PathVariable Long customerId, @Body Customer customer) {
+    customerService.updateCustomer(customerId, customer);
+    return HttpResponse.ok();
   }
 }
