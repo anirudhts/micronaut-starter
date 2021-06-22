@@ -19,6 +19,7 @@ repositories {
 checkstyle {
     toolVersion = '8.31'
     configDirectory = file("config/checkstyle")
+    checkstyleTest.enabled = false
 }
 
 micronaut {
