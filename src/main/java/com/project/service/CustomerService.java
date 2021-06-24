@@ -63,28 +63,40 @@ public class CustomerService {
         accountEntities.stream().map(Account::new).collect(Collectors.toList()));
   }
 
-  public void addCustomer(Customer customer) {
+  public Customer addCustomer(Customer customer) {
     if (customerRepository.findById(customer.getCustomerId()).isPresent()) {
       throw new ResourceConflictException("Customer is already present.");
     }
     CustomerEntity customerEntity = CustomerEntity.buildCustomerEntityFromCustomer(customer);
     customerRepository.save(customerEntity);
     customerCachedRepository.saveRecord(customerEntity);
+    return new Customer(customerEntity);
   }
 
-  public void updateCustomer(Long customerId, Customer customer) {
+  public Customer updateCustomer(Long customerId, Customer customer) {
     Optional<CustomerEntity> mayBeCustomerEntity = customerRepository.findById(customerId);
-    if (mayBeCustomerEntity.isPresent()) {
-      customer.setCustomerId(customerId);
-      CustomerEntity updatedCustomerEntity =
-          CustomerEntity.buildCustomerEntityFromCustomer(customer);
-      customerRepository.update(updatedCustomerEntity);
-      customerCachedRepository.saveRecord(updatedCustomerEntity);
-    }
+    return mayBeCustomerEntity
+        .map(
+            customerEntity -> {
+              customer.setCustomerId(customerId);
+              CustomerEntity updatedCustomerEntity =
+                  CustomerEntity.buildCustomerEntityFromCustomer(customer);
+              customerRepository.update(updatedCustomerEntity);
+              customerCachedRepository.saveRecord(updatedCustomerEntity);
+              return new Customer(updatedCustomerEntity);
+            })
+        .orElseThrow(() -> new ResourceNotFoundException("Customer not present"));
   }
 
   public void deleteCustomer(Long customerId) {
-    customerRepository.deleteById(customerId);
-    customerCachedRepository.deleteRecord(customerId);
+    Optional<CustomerEntity> mayBeCustomerEntity = customerRepository.findById(customerId);
+    mayBeCustomerEntity
+        .map(
+            customerEntity -> {
+              customerRepository.delete(customerEntity);
+              customerCachedRepository.deleteRecord(customerId);
+              return customerEntity;
+            })
+        .orElseThrow(() -> new ResourceNotFoundException("Customer not present"));
   }
 }

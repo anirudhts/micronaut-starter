@@ -34,12 +34,12 @@ public class CustomerController {
   @ApiResponse(responseCode = "400", description = "Invalid Request")
   @ApiResponse(responseCode = "404", description = "Not found")
   @ApiResponse(responseCode = "500", description = "Internal server error")
-  public List<Customer> getAllCustomers() {
+  public List<Customer> getList() {
     return customerService.getCustomers();
   }
 
   @Get("/{customerId}")
-  public Customer getCustomer(@PathVariable Long customerId) {
+  public Customer get(@PathVariable Long customerId) {
     return customerService.getCustomer(customerId);
   }
 
@@ -49,20 +49,18 @@ public class CustomerController {
   }
 
   @Post("/")
-  public HttpResponse addNewCustomer(@Body Customer customer) {
-    customerService.addCustomer(customer);
-    return HttpResponse.ok();
+  public Customer add(@Body Customer customer) {
+    return customerService.addCustomer(customer);
   }
 
   @Put("/{customerId}")
-  public HttpResponse updateCustomer(@PathVariable Long customerId, @Body Customer customer) {
-    customerService.updateCustomer(customerId, customer);
-    return HttpResponse.ok();
+  public Customer update(@PathVariable Long customerId, @Body Customer customer) {
+    return customerService.updateCustomer(customerId, customer);
   }
 
   @Delete("/{customerId}")
-  public HttpResponse deleteCustomer(@PathVariable Long customerId) {
+  public HttpResponse delete(@PathVariable Long customerId) {
     customerService.deleteCustomer(customerId);
-    return HttpResponse.ok();
+    return HttpResponse.noContent();
   }
 }
