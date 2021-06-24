@@ -26,38 +26,70 @@ public class CustomerController {
 
   @Get("/")
   @Operation(
-      summary = "Get customers",
-      description = "Fetches information of all customers of the system")
+      summary = "Get all customers list",
+      description = "Fetches information of all customers")
   @ApiResponse(
       content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
   @ApiResponse(responseCode = "200", description = "Success")
   @ApiResponse(responseCode = "400", description = "Invalid Request")
-  @ApiResponse(responseCode = "404", description = "Not found")
   @ApiResponse(responseCode = "500", description = "Internal server error")
   public List<Customer> getList() {
     return customerService.getCustomers();
   }
 
+  @Operation(summary = "Get customer", description = "Fetches the customer detail")
+  @ApiResponse(
+      content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
+  @ApiResponse(responseCode = "200", description = "Success")
+  @ApiResponse(responseCode = "404", description = "Not found")
+  @ApiResponse(responseCode = "500", description = "Internal server error")
   @Get("/{customerId}")
   public Customer get(@PathVariable Long customerId) {
     return customerService.getCustomer(customerId);
   }
 
+  @Operation(
+      summary = "Get customer accounts",
+      description = "Returns all the accounts for the customer")
+  @ApiResponse(
+      content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
+  @ApiResponse(responseCode = "200", description = "Success")
+  @ApiResponse(responseCode = "400", description = "Invalid Request")
+  @ApiResponse(responseCode = "500", description = "Internal server error")
   @Get("/{customerId}/accounts")
   public AccountResponse getAllCustomerAccounts(@PathVariable Long customerId) {
     return customerService.getAllAccountsByCustomerId(customerId);
   }
 
+  @Operation(summary = "Create customer", description = "Creates the new customer")
+  @ApiResponse(
+      content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
+  @ApiResponse(responseCode = "200", description = "Success")
+  @ApiResponse(responseCode = "422", description = "Validation Error")
+  @ApiResponse(responseCode = "500", description = "Internal server error")
   @Post("/")
   public Customer add(@Body Customer customer) {
     return customerService.addCustomer(customer);
   }
 
+  @Operation(summary = "Update customer", description = "Update the customer information")
+  @ApiResponse(
+      content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
+  @ApiResponse(responseCode = "200", description = "Success")
+  @ApiResponse(responseCode = "404", description = "Not found")
+  @ApiResponse(responseCode = "422", description = "Validation Error")
+  @ApiResponse(responseCode = "500", description = "Internal server error")
   @Put("/{customerId}")
   public Customer update(@PathVariable Long customerId, @Body Customer customer) {
     return customerService.updateCustomer(customerId, customer);
   }
 
+  @Operation(summary = "Delete customer", description = "Delete the customer data")
+  @ApiResponse(
+      content = @Content(mediaType = "application/json", schema = @Schema(type = "string")))
+  @ApiResponse(responseCode = "204", description = "No Content")
+  @ApiResponse(responseCode = "404", description = "Not found")
+  @ApiResponse(responseCode = "500", description = "Internal server error")
   @Delete("/{customerId}")
   public HttpResponse delete(@PathVariable Long customerId) {
     customerService.deleteCustomer(customerId);
