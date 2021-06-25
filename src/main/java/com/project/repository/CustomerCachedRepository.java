@@ -5,10 +5,8 @@ import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 import com.aerospike.client.policy.WritePolicy;
-import com.aerospike.mapper.tools.AeroMapper;
 import com.project.config.AerospikeProperties;
 import com.project.constants.AerospikeConstants;
-import com.project.models.Customer;
 import com.project.models.db.CustomerEntity;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -18,18 +16,16 @@ import javax.inject.Singleton;
 public class CustomerCachedRepository {
 
   private final AerospikeClient aerospikeClient;
-  private final AeroMapper aeroMapper;
   private final WritePolicy writePolicy;
 
   private final AerospikeProperties aerospikeProperties;
 
   @Inject
   public CustomerCachedRepository(
-          AerospikeClient aerospikeClient,
-          AeroMapper aeroMapper, WritePolicy writePolicy,
-          AerospikeProperties aerospikeProperties) {
+      AerospikeClient aerospikeClient,
+      WritePolicy writePolicy,
+      AerospikeProperties aerospikeProperties) {
     this.aerospikeClient = aerospikeClient;
-    this.aeroMapper = aeroMapper;
     this.writePolicy = writePolicy;
     this.aerospikeProperties = aerospikeProperties;
   }
@@ -44,15 +40,6 @@ public class CustomerCachedRepository {
     Bin phoneNo = new Bin(AerospikeConstants.PHONE_NUMBER, customer.getPhoneNo());
     aerospikeClient.put(writePolicy, key, name, phoneNo);
   }
-
-  public void saveRecordUsingMapper(CustomerEntity customerEntity){
-    aeroMapper.save(customerEntity);
-  }
-
-  public Optional<CustomerEntity> fetchRecordUsingMapper(Long customerId){
-    return Optional.ofNullable(aeroMapper.read(CustomerEntity.class,customerId));
-  }
-
 
   public void deleteRecord(Long customerId) {
     Key deleteKey =

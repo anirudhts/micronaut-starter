@@ -23,10 +23,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@AerospikeRecord(namespace="test", set= AerospikeConstants.CUSTOMER_SET)
+@AerospikeRecord(namespace = "test", set = AerospikeConstants.CUSTOMER_SET)
 public class CustomerEntity implements Serializable {
 
-  private static final long serialVersionUID = 100318l;
+  @AerospikeExclude private static final long serialVersionUID = 100318l;
+
   @Id
   @MappedProperty("customer_id")
   @NotNull
@@ -34,7 +35,7 @@ public class CustomerEntity implements Serializable {
   private Long customerId;
 
   @MappedProperty("customer_name")
-  @AerospikeBin(name="name")
+  @AerospikeBin(name = "name")
   private String name;
 
   @Nullable

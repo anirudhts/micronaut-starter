@@ -2,7 +2,6 @@ package com.project.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.project.models.Customer;
 import com.project.models.db.CustomerEntity;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -22,16 +21,6 @@ class CustomerCachedRepositoryTest {
     CustomerEntity customerEntity = new CustomerEntity(1234L, "ani", "24352");
     customerCachedRepository.saveRecord(customerEntity);
     assertEquals(customerEntity, customerCachedRepository.fetchRecord(1234L).get());
-  }
-
-
-  @Test
-  void saveRecordUsingMapperShouldAddANewRecord() {
-    CustomerEntity customerEntity = new CustomerEntity(1234L, "ani", "24352");
-    customerCachedRepository.saveRecordUsingMapper(customerEntity);
-    Optional<CustomerEntity> actualCustomer = customerCachedRepository.fetchRecordUsingMapper(1234L);
-    System.out.println(actualCustomer.get());
-    //assertEquals(customerEntity, actualCustomer.get());
   }
 
   @Test

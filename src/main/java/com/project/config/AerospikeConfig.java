@@ -22,8 +22,7 @@ public class AerospikeConfig {
   }
 
   @Singleton
-  public AeroMapper aerospikeMapper(AerospikeClient aerospikeClient){
+  public AeroMapper aerospikeMapper(AerospikeClient aerospikeClient) {
     return new AeroMapper.Builder(aerospikeClient).build();
   }
-
 }
