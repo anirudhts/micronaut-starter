@@ -19,7 +19,7 @@ aerospike:
 flyway:
   datasources:
     default:
-      enabled: true
+      enabled: false
       clean-schema: false
       url: ${JDBC_URL:`jdbc:oracle:thin:@localhost:11521:XE`}
       username: ${JDBC_USER:SYSTEM}

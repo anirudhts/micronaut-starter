@@ -1,6 +1,10 @@
 package com.project.models.db;
 
 import com.aerospike.client.Record;
+import com.aerospike.mapper.annotations.AerospikeBin;
+import com.aerospike.mapper.annotations.AerospikeExclude;
+import com.aerospike.mapper.annotations.AerospikeKey;
+import com.aerospike.mapper.annotations.AerospikeRecord;
 import com.project.constants.AerospikeConstants;
 import com.project.models.Customer;
 import io.micronaut.core.annotation.Nullable;
@@ -19,20 +23,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@AerospikeRecord(namespace="test", set= AerospikeConstants.CUSTOMER_SET)
 public class CustomerEntity implements Serializable {
 
   private static final long serialVersionUID = 100318l;
-
   @Id
   @MappedProperty("customer_id")
   @NotNull
+  @AerospikeKey
   private Long customerId;
 
   @MappedProperty("customer_name")
+  @AerospikeBin(name="name")
   private String name;
 
   @Nullable
   @MappedProperty("phone_number")
+  @AerospikeBin(name = "phone_number")
   private String phoneNo;
 
   public static CustomerEntity buildCustomerEntityFromCustomer(Customer customer) {

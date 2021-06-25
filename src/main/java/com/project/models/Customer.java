@@ -1,5 +1,9 @@
 package com.project.models;
 
+import com.aerospike.mapper.annotations.AerospikeBin;
+import com.aerospike.mapper.annotations.AerospikeKey;
+import com.aerospike.mapper.annotations.AerospikeRecord;
+import com.project.constants.AerospikeConstants;
 import com.project.models.db.CustomerEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Customer {
+  @AerospikeKey
   private Long customerId;
+
   private String name;
+
   private String phoneNo;
 
   public Customer(CustomerEntity customerEntity) {

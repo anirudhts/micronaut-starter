@@ -2,6 +2,7 @@ package com.project.config;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.policy.WritePolicy;
+import com.aerospike.mapper.tools.AeroMapper;
 import io.micronaut.context.annotation.Factory;
 import javax.inject.Singleton;
 
@@ -19,4 +20,10 @@ public class AerospikeConfig {
     writePolicy.setTimeout(10000);
     return writePolicy;
   }
+
+  @Singleton
+  public AeroMapper aerospikeMapper(AerospikeClient aerospikeClient){
+    return new AeroMapper.Builder(aerospikeClient).build();
+  }
+
 }
