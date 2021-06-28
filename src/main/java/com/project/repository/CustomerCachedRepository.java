@@ -5,10 +5,15 @@ import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 import com.aerospike.client.policy.WritePolicy;
+import com.aerospike.client.query.Filter;
 import com.aerospike.client.query.IndexType;
+import com.aerospike.client.query.RecordSet;
+import com.aerospike.client.query.Statement;
 import com.project.config.AerospikeProperties;
 import com.project.constants.AerospikeConstants;
 import com.project.models.db.CustomerEntity;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -79,14 +84,36 @@ public class CustomerCachedRepository {
   }
 
   public void addSecondaryKey(String secondaryKey, IndexType indexType) {
-    aerospikeClient.createIndex(null, AerospikeConstants.NAMESPACE, AerospikeConstants.CUSTOMER_SET, "idx_" + secondaryKey, secondaryKey, indexType);
+    aerospikeClient.createIndex(
+        null,
+        AerospikeConstants.NAMESPACE,
+        AerospikeConstants.CUSTOMER_SET,
+        "idx_" + secondaryKey,
+        secondaryKey,
+        indexType);
   }
 
   public void dropSecondaryKey(String secondaryKey) {
-    aerospikeClient.dropIndex(null, AerospikeConstants.NAMESPACE, AerospikeConstants.CUSTOMER_SET, "idx_" + secondaryKey);
+    aerospikeClient.dropIndex(
+        null, AerospikeConstants.NAMESPACE, AerospikeConstants.CUSTOMER_SET, "idx_" + secondaryKey);
   }
 
-//  public Optional<CustomerEntity> fetchFromSecondaryKey(Long customerId) {
-//    return Optional.ofNullable(aeroMapper.read(CustomerEntity.class, customerId));
-//  }
+  public List<CustomerEntity> fetchFromSecondaryKey(String secondaryKey, String value) {
+    Statement statement = new Statement();
+    statement.setNamespace(AerospikeConstants.NAMESPACE);
+    statement.setSetName(AerospikeConstants.CUSTOMER_SET);
+    statement.setFilter(Filter.equal(secondaryKey, value));
+    RecordSet recordSet = aerospikeClient.query(null, statement);
+    try {
+      List<CustomerEntity> customerEntities = new ArrayList<>();
+      recordSet.forEach(
+          record ->
+              customerEntities.add(
+                  CustomerEntity.getCustomerEntityFromRecord(
+                      record.record, record.record.getLong("customerId"))));
+      return customerEntities;
+    } finally {
+      recordSet.close();
+    }
+  }
 }

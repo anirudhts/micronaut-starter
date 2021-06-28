@@ -61,12 +61,15 @@ class CustomerCachedRepositoryTest {
   }
 
   @Test
-  void addSecondaryKeyInSet() {
+  void addSecondaryKeyInSetAndDeleteTheSecondaryKey() {
     customerCachedRepository.addSecondaryKey("name", IndexType.STRING);
+    customerCachedRepository.dropSecondaryKey("name");
   }
 
   @Test
-  void dropSecondaryKeyInSet() {
-    customerCachedRepository.dropSecondaryKey("name");
+  void fetchRecordFromSecondaryKey() {
+    customerCachedRepository.addSecondaryKey("phone_number", IndexType.STRING);
+    System.out.println(customerCachedRepository.fetchFromSecondaryKey("phone_number", "24352"));
+    customerCachedRepository.dropSecondaryKey("phone_number");
   }
 }
