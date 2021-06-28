@@ -2,6 +2,7 @@ package com.project.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.aerospike.client.query.IndexType;
 import com.project.models.db.CustomerEntity;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -57,5 +58,15 @@ class CustomerCachedRepositoryTest {
     customerCachedRepository.putObjectAsBlob(customerEntity);
 
     assertEquals(customerEntity, customerCachedRepository.getObjectBlob(customerId));
+  }
+
+  @Test
+  void addSecondaryKeyInSet() {
+    customerCachedRepository.addSecondaryKey("name", IndexType.STRING);
+  }
+
+  @Test
+  void dropSecondaryKeyInSet() {
+    customerCachedRepository.dropSecondaryKey("name");
   }
 }

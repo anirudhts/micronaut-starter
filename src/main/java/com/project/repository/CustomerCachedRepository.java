@@ -5,6 +5,7 @@ import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 import com.aerospike.client.policy.WritePolicy;
+import com.aerospike.client.query.IndexType;
 import com.project.config.AerospikeProperties;
 import com.project.constants.AerospikeConstants;
 import com.project.models.db.CustomerEntity;
@@ -76,4 +77,16 @@ public class CustomerCachedRepository {
 
     return (CustomerEntity) record.getValue("customer");
   }
+
+  public void addSecondaryKey(String secondaryKey, IndexType indexType) {
+    aerospikeClient.createIndex(null, AerospikeConstants.NAMESPACE, AerospikeConstants.CUSTOMER_SET, "idx_" + secondaryKey, secondaryKey, indexType);
+  }
+
+  public void dropSecondaryKey(String secondaryKey) {
+    aerospikeClient.dropIndex(null, AerospikeConstants.NAMESPACE, AerospikeConstants.CUSTOMER_SET, "idx_" + secondaryKey);
+  }
+
+//  public Optional<CustomerEntity> fetchFromSecondaryKey(Long customerId) {
+//    return Optional.ofNullable(aeroMapper.read(CustomerEntity.class, customerId));
+//  }
 }
