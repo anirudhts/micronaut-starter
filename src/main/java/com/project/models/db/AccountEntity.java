@@ -1,10 +1,8 @@
 package com.project.models.db;
 
-import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,9 +25,7 @@ public class AccountEntity {
   @MappedProperty("branch")
   private String branch;
 
-  @ManyToOne(targetEntity = CustomerEntity.class)
+  @ManyToOne
   @MappedProperty("customer_id")
-  @Nullable
-  @JoinColumn(name = "customers", referencedColumnName = "customer_id")
   private CustomerEntity customerEntity;
 }

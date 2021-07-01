@@ -99,4 +99,19 @@ public class CustomerService {
             })
         .orElseThrow(() -> new ResourceNotFoundException("Customer not present"));
   }
+
+  public List<Customer> getCustomerByName(String name) {
+    List<CustomerEntity> customerEntities = customerRepository.findByName(name);
+    return customerEntities.stream().map(Customer::new).collect(Collectors.toList());
+  }
+
+  public List<Account> getAccountsForACustomer(Long customerId) {
+    List<AccountEntity> accountEntities = accountRepository.findAccountsForCustomerId(customerId);
+    return accountEntities.stream().map(Account::new).collect(Collectors.toList());
+  }
+
+  public List<Account> getAccountDetailsForACustomer(Long accountId) {
+    Optional<AccountEntity> accountEntities = accountRepository.findByAccountId(accountId);
+    return accountEntities.stream().map(Account::new).collect(Collectors.toList());
+  }
 }

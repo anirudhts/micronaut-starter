@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.models.Account;
 import com.project.models.Customer;
 import com.project.models.dto.out.AccountResponse;
 import com.project.service.CustomerService;
@@ -94,5 +95,15 @@ public class CustomerController {
   public HttpResponse delete(@PathVariable Long customerId) {
     customerService.deleteCustomer(customerId);
     return HttpResponse.noContent();
+  }
+
+  @Get("/searchByName")
+  public List<Customer> getCustomerByName(@QueryValue String name) {
+    return customerService.getCustomerByName(name);
+  }
+
+  @Get("/accounts/{accountId}")
+  public List<Account> getAccountDetailsForACustomer(@PathVariable Long accountId) {
+    return customerService.getAccountDetailsForACustomer(accountId);
   }
 }

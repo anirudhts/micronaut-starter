@@ -66,10 +66,10 @@ class CustomerCachedRepositoryTest {
     customerCachedRepository.dropSecondaryKey("name");
   }
 
-  @Test
-  void fetchRecordFromSecondaryKey() {
-    customerCachedRepository.addSecondaryKey("phone_number", IndexType.STRING);
-    System.out.println(customerCachedRepository.fetchFromSecondaryKey("phone_number", "24352"));
-    customerCachedRepository.dropSecondaryKey("phone_number");
-  }
+  //  @Test
+  //  void fetchRecordFromSecondaryKey() {
+  //    customerCachedRepository.addSecondaryKey("phone_number", IndexType.STRING);
+  //    System.out.println(customerCachedRepository.fetchFromSecondaryKey("phone_number", "24352"));
+  //    customerCachedRepository.dropSecondaryKey("phone_number");
+  //  }
 }

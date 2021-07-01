@@ -13,4 +13,6 @@ public interface CustomerRepository extends CrudRepository<CustomerEntity, Long>
   @Executable
   @Override
   List<CustomerEntity> findAll();
+
+  List<CustomerEntity> findByName(String name);
 }
