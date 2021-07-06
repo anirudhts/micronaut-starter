@@ -12,6 +12,7 @@ import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,15 +44,33 @@ public class CustomerEntity implements Serializable {
   @AerospikeBin(name = "phone_number")
   private String phoneNo;
 
+  @Nullable
+  @MappedProperty("city")
+  @AerospikeBin(name = "city")
+  private String city;
+
+  @Nullable
+  @MappedProperty("address")
+  @AerospikeBin(name = "address")
+  private String address;
+
+  @Nullable
+  @MappedProperty("email")
+  @AerospikeBin(name = "email")
+  private String email;
+
   public static CustomerEntity buildCustomerEntityFromCustomer(Customer customer) {
-    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo());
+    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo(), customer.getCity(), customer.getAddress(), customer.getEmail());
   }
 
   public static CustomerEntity getCustomerEntityFromRecord(Record record, Long customerId) {
     return new CustomerEntity(
         customerId,
         record.getString(AerospikeConstants.CUSTOMER_NAME),
-        record.getString(AerospikeConstants.PHONE_NUMBER));
+        record.getString(AerospikeConstants.PHONE_NUMBER),
+        record.getString(AerospikeConstants.CITY),
+        record.getString(AerospikeConstants.ADDRESS),
+        record.getString(AerospikeConstants.EMAIL));
   }
 
   //  public CustomerEntity(Customer customer) {

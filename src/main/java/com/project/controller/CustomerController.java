@@ -106,4 +106,9 @@ public class CustomerController {
   public List<Account> getAccountDetailsForACustomer(@PathVariable Long accountId) {
     return customerService.getAccountDetailsForACustomer(accountId);
   }
+
+  @Get("/accounts/multiple/{accountId}")
+  public List<Account> getMultipleAccountDetails(@PathVariable Long accountId) {
+    return customerService.getMultipleAccountDetails(accountId);
+  }
 }

@@ -18,11 +18,6 @@ public interface AccountRepository extends CrudRepository<AccountEntity, Long> {
   @Join(value = "customerEntity", type = Join.Type.FETCH)
   Optional<AccountEntity> findByAccountId(Long accountId);
 
-  //  @Query(
-  //          value = "select * from accounts  where accounts.account_id = :accountId",
-  //          nativeQuery = true)
-  //  Optional<AccountEntity> findByAccountIdCustom(Long accountId);
-
   @Query(
       "SELECT c_.customer_name as name FROM customers c_ INNER JOIN accounts a ON a.customer_id = c_.customer_id where a.account_id = :accountId")
   @Join(value = "customers", alias = "c_")
@@ -33,4 +28,8 @@ public interface AccountRepository extends CrudRepository<AccountEntity, Long> {
           "select * from accounts inner join customers on customers.customer_id = accounts.customer_id where accounts.customer_id = :customerId",
       nativeQuery = true)
   List<AccountEntity> findAccountsForCustomerId(Long customerId);
+
+  @Join(value = "customerEntity", type = Join.Type.FETCH)
+  List<AccountEntity> findByAccountIdInRange(Long accountIdFrom, Long accountFromTo);
+
 }
