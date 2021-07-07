@@ -50,17 +50,27 @@ public class CustomerEntity implements Serializable {
   private String city;
 
   @Nullable
+  @MappedProperty("email")
+  @AerospikeBin(name = "email")
+  private String email;
+
+  @Nullable
   @MappedProperty("address")
   @AerospikeBin(name = "address")
   private String address;
 
   @Nullable
-  @MappedProperty("email")
-  @AerospikeBin(name = "email")
-  private String email;
+  @MappedProperty("address_line1")
+  @AerospikeBin(name = "address_line1")
+  private String addressLine1;
+
+  @Nullable
+  @MappedProperty("address_line2")
+  @AerospikeBin(name = "address_line2")
+  private String addressLine2;
 
   public static CustomerEntity buildCustomerEntityFromCustomer(Customer customer) {
-    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo(), customer.getCity(), customer.getAddress(), customer.getEmail());
+    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo(), customer.getCity(), customer.getEmail(), customer.getAddress(), customer.getAddressLine1(), customer.getAddressLine2());
   }
 
   public static CustomerEntity getCustomerEntityFromRecord(Record record, Long customerId) {
@@ -69,18 +79,9 @@ public class CustomerEntity implements Serializable {
         record.getString(AerospikeConstants.CUSTOMER_NAME),
         record.getString(AerospikeConstants.PHONE_NUMBER),
         record.getString(AerospikeConstants.CITY),
+        record.getString(AerospikeConstants.EMAIL),
         record.getString(AerospikeConstants.ADDRESS),
-        record.getString(AerospikeConstants.EMAIL));
+        record.getString(AerospikeConstants.ADDRESS_LINE1),
+        record.getString(AerospikeConstants.ADDRESS_LINE2));
   }
-
-  //  public CustomerEntity(Customer customer) {
-  //    this.name = customer.getName();
-  //    this.phoneNo = customer.getPhoneNo();
-  //    this.customerId = (long) (Math.random() * 10000);
-  //  }
-
-  //  @OneToMany(targetEntity = Accounts.class)
-  //  @JoinColumn(name = "accounts", referencedColumnName = "customer_id")
-  //  @Nullable
-  //  private List<Accounts> accounts;
 }

@@ -17,6 +17,8 @@ public class Customer {
   private String city;
   private String email;
   private String address;
+  private String addressLine1;
+  private String addressLine2;
 
   public Customer(CustomerEntity customerEntity) {
     this.customerId = customerEntity.getCustomerId();
@@ -25,5 +27,7 @@ public class Customer {
     this.city = customerEntity.getCity();
     this.email = customerEntity.getEmail();
     this.address = customerEntity.getAddress();
+    this.addressLine1 = customerEntity.getAddressLine1();
+    this.addressLine2 = customerEntity.getAddressLine2();
   }
 }
