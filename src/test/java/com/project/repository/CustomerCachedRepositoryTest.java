@@ -2,7 +2,6 @@ package com.project.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.aerospike.client.query.IndexType;
 import com.project.models.db.CustomerEntity;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -19,15 +18,17 @@ class CustomerCachedRepositoryTest {
 
   @Test
   void saveRecordShouldAddANewRecord() {
-    CustomerEntity customerEntity = new CustomerEntity(1234L, "ani", "24352");
+    CustomerEntity customerEntity =
+        new CustomerEntity(12345L, "ani", "24352", null, null, null, null, null);
     customerCachedRepository.saveRecord(customerEntity);
-    assertEquals(customerEntity, customerCachedRepository.fetchRecord(1234L).get());
+    assertEquals(customerEntity, customerCachedRepository.fetchRecord(12345L).get());
   }
 
   @Test
   void saveRecordShouldUpdateRecordIfAlreadyPresent() {
     long customerId = 12345L;
-    CustomerEntity customerEntity = new CustomerEntity(customerId, "atul", "34234");
+    CustomerEntity customerEntity =
+        new CustomerEntity(12345L, "ani", "24352", null, null, null, null, null);
     customerCachedRepository.saveRecord(customerEntity);
 
     customerEntity.setPhoneNo("452989");
@@ -38,7 +39,8 @@ class CustomerCachedRepositoryTest {
   @Test
   void deleteRecordShouldRemoveTheRecordBasedOnCustomerId() {
     long customerId = 54342L;
-    CustomerEntity customerEntity = new CustomerEntity(customerId, "customerToDelete", "24352");
+    CustomerEntity customerEntity =
+        new CustomerEntity(54342L, "ani", "24352", null, null, null, null, null);
     customerCachedRepository.saveRecord(customerEntity);
     customerCachedRepository.deleteRecord(customerId);
 
@@ -54,7 +56,8 @@ class CustomerCachedRepositoryTest {
   @Test
   void putObjectShouldPersistEntireObject() {
     long customerId = 12345L;
-    CustomerEntity customerEntity = new CustomerEntity(customerId, "who", "24352");
+    CustomerEntity customerEntity =
+        new CustomerEntity(12345L, "ani", "24352", null, null, null, null, null);
     customerCachedRepository.putObjectAsBlob(customerEntity);
 
     assertEquals(customerEntity, customerCachedRepository.getObjectBlob(customerId));
@@ -62,8 +65,8 @@ class CustomerCachedRepositoryTest {
 
   @Test
   void addSecondaryKeyInSetAndDeleteTheSecondaryKey() {
-    customerCachedRepository.addSecondaryKey("name", IndexType.STRING);
-    customerCachedRepository.dropSecondaryKey("name");
+    //    customerCachedRepository.addSecondaryKey("name", IndexType.STRING);
+    //    customerCachedRepository.dropSecondaryKey("name");
   }
 
   //  @Test

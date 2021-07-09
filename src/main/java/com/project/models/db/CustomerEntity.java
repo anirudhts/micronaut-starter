@@ -12,7 +12,6 @@ import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,7 +69,15 @@ public class CustomerEntity implements Serializable {
   private String addressLine2;
 
   public static CustomerEntity buildCustomerEntityFromCustomer(Customer customer) {
-    return new CustomerEntity(customer.getCustomerId(), customer.getName(), customer.getPhoneNo(), customer.getCity(), customer.getEmail(), customer.getAddress(), customer.getAddressLine1(), customer.getAddressLine2());
+    return new CustomerEntity(
+        customer.getCustomerId(),
+        customer.getName(),
+        customer.getPhoneNo(),
+        customer.getCity(),
+        customer.getEmail(),
+        customer.getAddress(),
+        customer.getAddressLine1(),
+        customer.getAddressLine2());
   }
 
   public static CustomerEntity getCustomerEntityFromRecord(Record record, Long customerId) {

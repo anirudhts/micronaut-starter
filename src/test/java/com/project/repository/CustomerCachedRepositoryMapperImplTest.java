@@ -18,7 +18,7 @@ class CustomerCachedRepositoryMapperImplTest {
 
   @Test
   void saveRecordUsingMapperShouldAddANewRecord() {
-    CustomerEntity customerEntity = new CustomerEntity(1234L, "ani", "24352");
+    CustomerEntity customerEntity = new CustomerEntity(1234L, "ani", "24352", "", "", "", "", "");
     customerCachedRepositoryMapper.saveRecord(customerEntity);
     Optional<CustomerEntity> actualCustomer = customerCachedRepositoryMapper.fetchRecord(1234L);
     assertEquals(customerEntity, actualCustomer.get());

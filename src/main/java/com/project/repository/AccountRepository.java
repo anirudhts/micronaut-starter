@@ -31,5 +31,4 @@ public interface AccountRepository extends CrudRepository<AccountEntity, Long> {
 
   @Join(value = "customerEntity", type = Join.Type.FETCH)
   List<AccountEntity> findByAccountIdInRange(Long accountIdFrom, Long accountFromTo);
-
 }
