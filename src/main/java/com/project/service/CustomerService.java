@@ -8,8 +8,9 @@ import com.project.models.db.AccountEntity;
 import com.project.models.db.CustomerEntity;
 import com.project.models.dto.out.AccountResponse;
 import com.project.repository.AccountRepository;
-import com.project.repository.CustomerCachedRepository;
 import com.project.repository.CustomerRepository;
+import com.project.repository.aerospike.CustomerCachedRepository;
+import com.project.repository.aerospike.CustomerCachedRepositoryMapperImpl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,15 +23,18 @@ public class CustomerService {
   private final CustomerRepository customerRepository;
   private final AccountRepository accountRepository;
   private final CustomerCachedRepository customerCachedRepository;
+  private final CustomerCachedRepositoryMapperImpl customerCachedRepositoryMapperImpl;
 
   @Inject
   public CustomerService(
       CustomerRepository customerRepository,
       AccountRepository accountRepository,
-      CustomerCachedRepository customerCachedRepository) {
+      CustomerCachedRepository customerCachedRepository,
+      CustomerCachedRepositoryMapperImpl customerCachedRepositoryMapperImpl) {
     this.customerRepository = customerRepository;
     this.accountRepository = accountRepository;
     this.customerCachedRepository = customerCachedRepository;
+    this.customerCachedRepositoryMapperImpl = customerCachedRepositoryMapperImpl;
   }
 
   public List<Customer> getCustomers() {
@@ -40,16 +44,17 @@ public class CustomerService {
   }
 
   public Customer getCustomer(Long customerId) {
-    Optional<CustomerEntity> mayBeCustomerEntity = customerCachedRepository.fetchRecord(customerId);
+    Optional<CustomerEntity> mayBeCustomerEntity =
+        customerCachedRepositoryMapperImpl.fetchRecord(customerId);
     return mayBeCustomerEntity
         .map(Customer::new)
         .orElseGet(
             () ->
                 customerRepository
-                    .findById(customerId)
+                    .findByCustomerId(customerId)
                     .map(
                         customerEntity -> {
-                          customerCachedRepository.saveRecord(customerEntity);
+                          customerCachedRepositoryMapperImpl.saveRecord(customerEntity);
                           return new Customer(customerEntity);
                         })
                     .orElseThrow(() -> new ResourceNotFoundException("Customer not present")));
@@ -119,5 +124,19 @@ public class CustomerService {
     List<AccountEntity> accountEntities =
         accountRepository.findByAccountIdInRange(accountId, accountId + 10);
     return accountEntities.stream().map(Account::new).collect(Collectors.toList());
+  }
+
+  public Customer getCustomerFromDB(Long customerId) {
+    return customerRepository
+        .findByCustomerId(customerId)
+        .map(Customer::new)
+        .orElseThrow(() -> new ResourceNotFoundException("Customer not present"));
+  }
+
+  public Customer getCustomerFromCache(Long customerId) {
+    return customerCachedRepositoryMapperImpl
+        .fetchRecord(customerId)
+        .map(Customer::new)
+        .orElseThrow(() -> new ResourceNotFoundException("Customer not present"));
   }
 }

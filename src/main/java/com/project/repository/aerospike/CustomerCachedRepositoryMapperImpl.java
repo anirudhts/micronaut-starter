@@ -1,4 +1,4 @@
-package com.project.repository;
+package com.project.repository.aerospike;
 
 import com.aerospike.mapper.tools.AeroMapper;
 import com.project.models.db.CustomerEntity;

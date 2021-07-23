@@ -3,6 +3,7 @@ package com.project.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.project.models.db.CustomerEntity;
+import com.project.repository.aerospike.CustomerCachedRepository;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import java.util.Optional;

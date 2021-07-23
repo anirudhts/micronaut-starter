@@ -24,7 +24,7 @@ class CustomerServiceTest {
 
   @BeforeEach
   void setUp() {
-    customerService = new CustomerService(customerRepository, accountRepository, null);
+    customerService = new CustomerService(customerRepository, accountRepository, null, null);
   }
 
   @Test

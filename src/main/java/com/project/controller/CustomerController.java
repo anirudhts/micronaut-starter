@@ -111,4 +111,14 @@ public class CustomerController {
   public List<Account> getMultipleAccountDetails(@PathVariable Long accountId) {
     return customerService.getMultipleAccountDetails(accountId);
   }
+
+  @Get("/db/{customerId}")
+  public Customer getFromDB(@PathVariable Long customerId) {
+    return customerService.getCustomerFromDB(customerId);
+  }
+
+  @Get("/cache/{customerId}")
+  public Customer getFromCache(@PathVariable Long customerId) {
+    return customerService.getCustomerFromCache(customerId);
+  }
 }

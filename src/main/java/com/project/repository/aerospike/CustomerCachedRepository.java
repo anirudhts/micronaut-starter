@@ -1,4 +1,4 @@
-package com.project.repository;
+package com.project.repository.aerospike;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Bin;
