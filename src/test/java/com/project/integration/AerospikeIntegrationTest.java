@@ -2,8 +2,6 @@ package com.project.integration;
 
 import static com.project.constants.AerospikeConstants.NAMESPACE;
 
-import com.aerospike.client.AerospikeClient;
-import com.aerospike.mapper.tools.AeroMapper;
 import com.project.models.db.CustomerEntity;
 import com.project.repository.aerospike.CustomerCachedRepositoryMapperImpl;
 import io.micronaut.context.ApplicationContext;
@@ -11,6 +9,7 @@ import io.micronaut.context.env.PropertySource;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import java.util.Map;
 import java.util.Optional;
+import javax.inject.Inject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,22 +19,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @MicronautTest
-// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @MicronautTest(
 //    packages = {"com.project.repository.aerospike", "com.project.config"},
 //    startApplication = false)
 public class AerospikeIntegrationTest {
 
-  //  @Inject
-  CustomerCachedRepositoryMapperImpl customerCachedRepositoryMapper;
+  @Inject CustomerCachedRepositoryMapperImpl customerCachedRepositoryMapper;
 
   private static ApplicationContext context;
-  AerospikeClient aerospikeClient;
-  AeroMapper aeroMapper;
+  //  private AerospikeClient aerospikeClient;
+  //  private AeroMapper aeroMapper;
 
-  // 172.17.0.1:59826
-  // 172.17.0.1:59882
-  // 172.17.0.1:59994
   @Container
   public static GenericContainer aerospike =
       new GenericContainer("aerospike/aerospike-server")
@@ -43,15 +37,8 @@ public class AerospikeIntegrationTest {
           .withEnv("SERVICE_PORT", "3000")
           .withEnv("NAMESPACE", NAMESPACE);
 
-  //  @EachBean(AerospikeProperties.class)
-  //  void mutateAerospikeProperties(AerospikeProperties aerospikeProperties){
-  //    System.out.println("props in test" + aerospikeProperties);
-  //  }
-
   //  @BeforeEach
   //  void setUp() {
-  //    System.out.println("Port num: " + aerospike.getMappedPort(3000));
-  //    System.out.println("Host IP: " + aerospike.getHost());
   //
   //    aerospikeClient = new AerospikeClient(aerospike.getHost(),aerospike.getMappedPort(3000));
   //    aeroMapper = new AeroMapper.Builder(aerospikeClient).build();
@@ -72,7 +59,7 @@ public class AerospikeIntegrationTest {
   }
 
   @BeforeEach
-  public void initTest() {
+  public void initBeansForTest() {
     customerCachedRepositoryMapper = context.getBean(CustomerCachedRepositoryMapperImpl.class);
   }
 
