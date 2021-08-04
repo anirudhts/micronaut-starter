@@ -6,21 +6,19 @@ import com.project.models.db.CustomerEntity;
 import com.project.repository.aerospike.CustomerCachedRepositoryMapperImpl;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.PropertySource;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.containers.output.OutputFrame;
+import org.testcontainers.containers.output.ToStringConsumer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-// @MicronautTest
-// @MicronautTest(
-//    packages = {"com.project.repository.aerospike", "com.project.config"},
-//    startApplication = false)
 public class AerospikeIntegrationTest {
 
   //  @Inject
@@ -28,16 +26,20 @@ public class AerospikeIntegrationTest {
 
   private static ApplicationContext context;
 
-  @Container
+  // @Container
   public static GenericContainer aerospike =
       new GenericContainer("aerospike/aerospike-server")
           .withExposedPorts(3000)
           .withEnv("SERVICE_PORT", "3000")
           .withEnv("NAMESPACE", NAMESPACE)
-          .withStartupTimeout(Duration.ofSeconds(15));
+          .waitingFor(Wait.forLogMessage(".*heartbeat-received.*", 1));
+  private static final ToStringConsumer toStringConsumer = new ToStringConsumer();
 
   @BeforeAll
   static void setup() {
+    aerospike.start();
+    aerospike.followOutput(toStringConsumer, OutputFrame.OutputType.STDOUT);
+
     context =
         ApplicationContext.run(
             PropertySource.of(
@@ -49,6 +51,12 @@ public class AerospikeIntegrationTest {
                     aerospike.getMappedPort(3000))));
 
     customerCachedRepositoryMapper = context.getBean(CustomerCachedRepositoryMapperImpl.class);
+  }
+
+  @AfterAll
+  static void printLogs() {
+
+    aerospike.stop();
   }
 
   @Test
